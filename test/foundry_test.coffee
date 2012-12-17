@@ -1,5 +1,6 @@
 Foundry = require('../dist/foundry').Foundry
 assert = require 'assert'
+strictEqual = assert.strictEqual
 
 describe 'Foundry', ->
   foundry = null
@@ -28,31 +29,31 @@ describe 'Foundry', ->
     it 'should create a default object with default values', ->
       contact = foundry.build 'Contact'
 
-      equal contact.id, '1'
-      equal contact.display_name, 'Ralph'
-      equal contact.status, 'prospect'
+      strictEqual '1', contact.id
+      strictEqual 'Ralph', contact.display_name
+      strictEqual 'prospect', contact.status
 
     it 'default values can be overriden in new instance', ->
-      contact = foundry.build 'Contact',
+      contact = foundry.build 'Contact', 
         id: 2
         display_name: 'Bob'
 
-      equal contact.id, '2'
-      equal contact.display_name, 'Bob'
-      equal contact.status, 'prospect'
+      strictEqual '2', contact.id
+      strictEqual 'Bob', contact.display_name
+      strictEqual 'prospect', contact.status
 
     it 'attributes can be function', ->
-      contact = foundry.build 'Contact', 
+      contact = foundry.build 'Contact',
         company: -> 'Nokia'
 
-      equal contact.company, 'Nokia'
+      strictEqual 'Nokia', contact.company
 
     it 'attribute functions have access to the object', ->
       contact = foundry.build 'Contact',
         name: 'Adam'
         email: -> "#{@name}@radiumcrm.com"
 
-      equal contact.email, "Adam@radiumcrm.com"
+      strictEqual "Adam@radiumcrm.com", contact.email
 
     it 'attribute can be nested', ->
       foundry.define 'ContactWithAddress', from: 'Contact',
@@ -64,8 +65,8 @@ describe 'Foundry', ->
         address:
           street: '456 Qux'
 
-      equal contact.address.street, '456 Qux', 'Nested attributes override'
-      equal contact.address.city, 'Baztown', 'Nested attributes maintained'
+      strictEqual '456 Qux', contact.address.street
+      strictEqual 'Baztown', contact.address.city
 
     it 'function attributes can be nested', ->
       foundry.define 'ContactWithAddress', from: 'Contact',
@@ -77,13 +78,12 @@ describe 'Foundry', ->
         address:
           street: -> '456 Qux'
 
-      equal contact.address.street, '456 Qux', 'Nested attributes override'
-      equal contact.address.city, 'Baztown', 'Nested attributes maintained'
+      strictEqual '456 Qux', contact.address.street
+      strictEqual 'Baztown', contact.address.city
 
   describe "Parents", ->
     beforeEach ->
-      foundry.define 'Human',
-        sex: 'Male'
+      foundry.define 'Human', sex: 'Male'
 
     it 'a foundry can use a parent', ->
       foundry.define 'Adam', from: 'Human',
@@ -91,8 +91,8 @@ describe 'Foundry', ->
 
       adam = foundry.build 'Adam'
 
-      equal adam.name, 'Adam', 'Defined attribute correct'
-      equal adam.sex, 'Male', 'Parent attribute correct'
+      strictEqual 'Adam', adam.name
+      strictEqual 'Male', adam.sex
 
     it 'a foundry can define a parent and extend its defaults', ->
       foundry.define 'Female', from: 'Human',
@@ -100,7 +100,7 @@ describe 'Foundry', ->
 
       female = foundry.build 'Female'
 
-      equal female.sex, 'Female', 'Parent attribute redefined'
+      strictEqual 'Female', female.sex
 
   describe 'Sequences', ->
     it 'attribute can autoincrement', ->
@@ -111,9 +111,9 @@ describe 'Foundry', ->
       b = foundry.build 'User'
       c = foundry.build 'User'
 
-      strictEqual a.id, '1', 'user sequence one'
-      strictEqual b.id, '2', 'user sequence two'
-      strictEqual c.id, '3', 'user sequence three'
+      strictEqual '1', a.id
+      strictEqual '2', b.id
+      strictEqual '3', c.id
 
     it 'sequences accept a callback', ->
       foundry.define 'User',
@@ -123,9 +123,9 @@ describe 'Foundry', ->
       b = foundry.build 'User'
       c = foundry.build 'User'
 
-      strictEqual a.id, 'User 1', 'user sequence one'
-      strictEqual b.id, 'User 2', 'user sequence two'
-      strictEqual c.id, 'User 3', 'user sequence three'
+      strictEqual 'User 1', a.id
+      strictEqual 'User 2', b.id
+      strictEqual 'User 3', c.id
 
     it 'sequences defined in the parent work', ->
       foundry.define 'Parent',
@@ -138,9 +138,9 @@ describe 'Foundry', ->
       b = foundry.build 'Child'
       c = foundry.build 'Child'
 
-      strictEqual a.id, '1', 'child with parent sequence one'
-      strictEqual b.id, '2', 'child with parent sequence two'
-      strictEqual c.id, '3', 'child with parent sequence three'
+      strictEqual '1', a.id
+      strictEqual '2', b.id
+      strictEqual '3', c.id
 
     it 'an id sequence is added by default', ->
       foundry.define 'User'
@@ -150,15 +150,15 @@ describe 'Foundry', ->
       b = foundry.build 'User'
       c = foundry.build 'User'
 
-      strictEqual a.id, '1', 'rookie sequence one'
-      strictEqual b.id, '2', 'rookie sequence two'
-      strictEqual c.id, '3', 'rookie sequence three'
+      strictEqual '1', a.id
+      strictEqual '2', b.id
+      strictEqual '3', c.id
 
   describe "create", ->
     beforeEach ->
       foundry.adapter = new Foundry.NullAdapter()
 
-      foundry.define 'Todo', 
+      foundry.define 'Todo',
         name: 'Todo'
 
     afterEach ->
@@ -166,24 +166,24 @@ describe 'Foundry', ->
 
   it 'objects can be created with the null adapter', ->
     todo = foundry.create 'Todo'
-    equal todo.name, "Todo"
+    strictEqual "Todo", todo.name
 
   it 'create raise an error when there is no adapter', ->
     foundry.adapter = undefined
 
-    raises (-> foundry.create('todo')), /adapter/i
+    assert.throws (-> foundry.create('todo')), /adapter/i
 
   describe "Traits", ->
     beforeEach ->
       foundry.trait 'timestamps',
-        created: 'yesterday',
+        created: 'yesterday'
         updated: 'today'
 
     it 'raise an errors on unknown traits', ->
       foundry.define 'Todo',
-        task: 'Todo'
+       task: 'Todo'
 
-      raises (-> foundry.define('Todo', traits: 'fooBar'))
+      assert.throws (-> foundry.define('Todo', traits: 'fooBar'))
 
     it 'traits can be used a definition time', ->
       foundry.define 'Todo', traits: 'timestamps',
@@ -191,8 +191,8 @@ describe 'Foundry', ->
 
       todo = foundry.build 'Todo'
 
-      equal todo.task, 'Todo', 'Record build correctly'
-      equal todo.created, 'yesterday', 'Trait built correctly'
+      strictEqual 'Todo', todo.task
+      strictEqual 'yesterday', todo.created
 
     it 'traits can be defined in parent classes', ->
       foundry.define 'Task', traits: 'timestamps',
@@ -203,6 +203,6 @@ describe 'Foundry', ->
 
       todo = foundry.build 'Todo'
 
-      equal todo.task, 'Todo', 'Record build correctly'
-      equal todo.created, 'yesterday', 'Trait built correctly'
-      equal todo.updated, 'today', 'Trait built correctly'
+      strictEqual 'Todo', todo.task
+      strictEqual 'yesterday', todo.created
+      strictEqual 'today', todo.updated
