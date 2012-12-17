@@ -1,0 +1,13 @@
+{ 
+  "name" : "foundry",
+  "version" : "0.1.0",
+  "dependencies" : { 
+    "grunt": "~0.4.0",
+    "coffee-script": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-simple-mocha" : "*"
+  }
+}
