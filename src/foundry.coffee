@@ -109,4 +109,9 @@ class Foundry
     for k, v of @traits
       delete @traits[k]
 
-exports.Foundry = Foundry
+
+if exports != undefined
+  exports.Foundry = Foundry
+else if window != undefined
+  window.Foundry = Foundry
+

@@ -2,4 +2,7 @@ class NullAdapter
   save: (klass, record) ->
     record
 
-exports.Foundry.NullAdapter = NullAdapter
+if exports != undefined
+  exports.Foundry.NullAdapter = NullAdapter
+else if window != undefined
+  window.Foundry = NullAdapter
