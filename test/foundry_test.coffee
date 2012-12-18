@@ -164,14 +164,14 @@ describe 'Foundry', ->
     afterEach ->
       foundry.adapter = new Foundry.NullAdapter()
 
-  it 'objects can be created with the null adapter', ->
-    todo = foundry.create 'Todo'
-    strictEqual "Todo", todo.name
+    it 'objects can be created with the null adapter', ->
+      todo = foundry.create 'Todo'
+      strictEqual "Todo", todo.name
 
-  it 'create raise an error when there is no adapter', ->
-    foundry.adapter = undefined
+    it 'create raise an error when there is no adapter', ->
+      foundry.adapter = undefined
 
-    assert.throws (-> foundry.create('todo')), /adapter/i
+      assert.throws (-> foundry.create('todo')), /adapter/i
 
   describe "Traits", ->
     beforeEach ->
