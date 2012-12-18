@@ -146,6 +146,14 @@ Node is used for development. It's easy to get up and running.
 
 All tests should be passing at this point. Now you're ready to go.
 
+## Building
+
+You can build Foundry from source if you like. First, follow all the
+instructions under "Development". Run `grunt` inside the root
+directory. This will output `foundry.js` and `foundry.min.js` into
+`dist/`. You should only use these files in your project if all tests
+passed. You can run tests by running `grunt test`.
+
 ## Contributing
 
 1. Fork it
