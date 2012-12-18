@@ -38,7 +38,7 @@ describe 'Foundry', ->
         id: 2
         display_name: 'Bob'
 
-      strictEqual '2', contact.id
+      strictEqual 2, contact.id
       strictEqual 'Bob', contact.display_name
       strictEqual 'prospect', contact.status
 

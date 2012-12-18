@@ -9,6 +9,21 @@ class Foundry
     @definitions = {}
     @traits = {}
 
+  merge: (base, object) ->
+    clone = {}
+
+    for name, value of base
+      clone[name] = value
+
+    for name, copy of object
+      if copy && @typeOf(copy) == 'object'
+        newBase = base[name] || {}
+        clone[name] = @merge newBase, copy
+      else if copy
+        clone[name] = copy
+
+    clone
+
   sequence: (callback) ->
     counter = 0
     callback ?= (i) -> "#{i}"
@@ -43,7 +58,7 @@ class Foundry
     parent = options.from
 
     if parent and @definitions.hasOwnProperty(parent)
-      attributes = $.extend {}, @definitions[parent], attributes
+      attributes = @merge @definitions[parent], attributes
     else if parent and !@definitions.hasOwnProperty(parent)
       throw new Error("Undefined factory: #{parent}")
 
@@ -53,7 +68,7 @@ class Foundry
     for trait in options.traits
       unless @traits.hasOwnProperty trait
         throw new Error("there is no trait definition for #{trait}")
-      attributes = $.extend true, {}, @traits[trait], attributes
+      attributes = @merge @traits[trait], attributes
 
     @definitions[klass] = attributes
 
@@ -62,7 +77,7 @@ class Foundry
       throw new Error("there is no factory definition for #{klass}")
 
     definition = @definitions[klass]
-    instance = $.extend true, {}, definition, attributes
+    instance = @merge definition, attributes
 
     @_evaluateFunctions instance
 
