@@ -128,7 +128,7 @@ foundry.define('male', { from: 'human' }, {
 
 foundry.define('female', { from: 'human' }, {
   sex: 'female'
-  height: 1.4m'
+  height: '1.4m'
 });
 
 adam = foundry.build('male');
