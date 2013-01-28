@@ -1,9 +1,3 @@
-types = "Boolean Number String Function Array Date RegExp Object".split(" ")
-TYPE_MAP = []
-
-for type in types
-  TYPE_MAP[ "[object " + type + "]" ] = type.toLowerCase()
-
 class Foundry
   constructor: ->
     @definitions = {}
@@ -16,7 +10,7 @@ class Foundry
       clone[name] = value
 
     for name, copy of object
-      if copy && @typeOf(copy) == 'object'
+      if copy && copy.constructor == Object
         newBase = base[name] || {}
         clone[name] = @merge newBase, copy
       else if copy
@@ -32,12 +26,6 @@ class Foundry
 
   trait: (name, attributes) ->
     @traits[name] = attributes
-
-  typeOf: (item) ->
-    if item == null or item == undefined
-      String(item) 
-    else
-      TYPE_MAP[Object::toString.call(item)] || 'object'
 
   define: (klass, options, attributes) ->
     if @definitions.hasOwnProperty klass
@@ -84,15 +72,14 @@ class Foundry
 
   _evaluateFunctions: (record) ->
     for k, v of record
-      switch @typeOf v
-        when 'function'
-          result = record[k]()
-          delete record[k]
-          record[k] = result
-        when 'object'
-          record[k] = @_evaluateFunctions v
-        else
-          record
+      if v.constructor == Function
+        result = record[k]()
+        delete record[k]
+        record[k] = result
+      else if v.constructor == Object
+        record[k] = @_evaluateFunctions v
+      else
+        record
 
     record
 
