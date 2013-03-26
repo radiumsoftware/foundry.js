@@ -43,7 +43,7 @@ module.exports = function(grunt) {
       },
 
       all: { 
-        src: 'test/foundry_test.coffee'
+        src: 'test/**/*_test.coffee'
       }
     }
   });
