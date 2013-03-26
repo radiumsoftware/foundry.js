@@ -41,8 +41,9 @@ module.exports = function(grunt) {
         ui: 'bdd',
         reporter: 'dot'
       },
+
       all: { 
-        src: ['test/**/*.coffee']
+        src: 'test/foundry_test.coffee'
       }
     }
   });

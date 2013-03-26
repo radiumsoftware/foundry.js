@@ -22,8 +22,8 @@ describe 'Foundry', ->
   describe 'Default values', ->
     beforeEach ->
       foundry.define 'Contact',
-        id: '1'
-        display_name: 'Ralph'
+        id: '1',
+        display_name: 'Ralph',
         status: 'prospect'
 
     it 'should create a default object with default values', ->
@@ -35,7 +35,7 @@ describe 'Foundry', ->
 
     it 'default values can be overriden in new instance', ->
       contact = foundry.build 'Contact', 
-        id: 2
+        id: 2,
         display_name: 'Bob'
 
       strictEqual 2, contact.id
@@ -50,7 +50,7 @@ describe 'Foundry', ->
 
     it 'attribute functions have access to the object', ->
       contact = foundry.build 'Contact',
-        name: 'Adam'
+        name: 'Adam',
         email: -> "#{@name}@radiumcrm.com"
 
       strictEqual "Adam@radiumcrm.com", contact.email
@@ -58,7 +58,7 @@ describe 'Foundry', ->
     it 'attribute can be nested', ->
       foundry.define 'ContactWithAddress', from: 'Contact',
         address:
-          street: '123 Foo Bar'
+          street: '123 Foo Bar',
           city: 'Baztown'
 
       contact = foundry.build 'ContactWithAddress',
@@ -71,7 +71,7 @@ describe 'Foundry', ->
     it 'function attributes can be nested', ->
       foundry.define 'ContactWithAddress', from: 'Contact',
         address:
-          street: '123 Foo Bar'
+          street: '123 Foo Bar',
           city: 'Baztown'
 
       contact = foundry.build 'ContactWithAddress',
@@ -143,7 +143,7 @@ describe 'Foundry', ->
       strictEqual '3', c.id
 
     it 'an id sequence is added by default', ->
-      foundry.define 'User'
+      foundry.define 'User',
         name: 'Adam'
 
       a = foundry.build 'User'
@@ -176,7 +176,7 @@ describe 'Foundry', ->
   describe "Traits", ->
     beforeEach ->
       foundry.trait 'timestamps',
-        created: 'yesterday'
+        created: 'yesterday',
         updated: 'today'
 
     it 'raise an errors on unknown traits', ->

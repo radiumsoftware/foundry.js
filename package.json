@@ -8,6 +8,6 @@
     "grunt-contrib-concat": "*",
     "grunt-contrib-coffee": "*",
     "grunt-contrib-uglify": "*",
-    "grunt-simple-mocha" : "*"
+    "grunt-simple-mocha" : "git://github.com/yaymukund/grunt-simple-mocha.git"
   }
 }
