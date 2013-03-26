@@ -41,14 +41,16 @@ class Foundry
       attributes = {}
 
     attributes ||= {}
-    attributes.id ||= @sequence()
 
     parent = options.from
 
     if parent and @definitions.hasOwnProperty(parent)
+      attributes.id ||= @definitions[parent].id
       attributes = @merge @definitions[parent], attributes
     else if parent and !@definitions.hasOwnProperty(parent)
       throw new Error("Undefined factory: #{parent}")
+
+    attributes.id ||= @sequence()
 
     options.traits ||= []
     options.traits = [options.traits] if typeof(options.traits) == 'string'

@@ -102,6 +102,24 @@ describe 'Foundry', ->
 
       strictEqual 'Female', female.sex
 
+    it 'uses the parent id sequence', ->
+      foundry.define 'Female', from: 'Human',
+        sex: 'Female'
+
+      female = foundry.build 'Female'
+      male = foundry.build 'Human'
+
+      assert.notStrictEqual female.id, male.id
+
+    it 'allows the id to be overridden', ->
+      foundry.define 'Female', from: 'Human',
+        sex: 'Female'
+        id: 'anne'
+
+      female = foundry.build 'Female'
+
+      strictEqual 'anne', female.id
+
   describe 'Sequences', ->
     it 'attribute can autoincrement', ->
       foundry.define 'User',
